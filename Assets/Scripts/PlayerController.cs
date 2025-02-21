@@ -6,14 +6,19 @@ public class PlayerController : MonoBehaviour
 {
     CharacterController _control;
     Animator _anim;
+    [SerializeField] GameObject _attackHitbox;
 
     [SerializeField] float playerSpeed;
+    public bool isAttacking;
 
     void Start()
     {
         //Get components
         _control = GetComponent<CharacterController>();
         _anim = GetComponent<Animator>();
+
+        _attackHitbox.SetActive(false);
+        isAttacking = false;
     }
 
     void Update()
@@ -32,17 +37,29 @@ public class PlayerController : MonoBehaviour
         } 
         _anim.SetFloat("speed", movement.magnitude); //Idle to run animation
 
+        //Lock on
+
         //Attack
         if (Input.GetMouseButtonDown(0))
         {
             StartCoroutine(attack());
         }
+
+        if (isAttacking)
+        {
+            _attackHitbox.SetActive(true);
+        } 
+        else
+        {
+            _attackHitbox.SetActive(false);
+        }
     }
 
     IEnumerator attack()
     {
-        _anim.SetBool("playerAttack", true);
-        yield return new WaitForSeconds(0.7f * Time.deltaTime);
-        _anim.SetBool("playerAttack", false);
+        _anim.SetTrigger("playerAttack");
+        isAttacking = true;
+        yield return new WaitForSeconds(0.3f);
+        isAttacking = false;
     }
 }
