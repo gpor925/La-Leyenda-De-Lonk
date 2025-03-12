@@ -6,6 +6,10 @@ TagManager:
   tags:
   - PlayerAttack
   - Enemy
+  - Gem1
+  - Lava
+  - Win
+  - Portal
   layers:
   - Default
   - TransparentFX
